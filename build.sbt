@@ -67,6 +67,9 @@ lazy val rules = projectMatrix
     moduleName := "scalafix-rules",
     publishTo := sonatypePublishToBundle.value,
     libraryDependencies += "ch.epfl.scala" %% "scalafix-core" % V.scalafixVersion,
+    libraryDependencies += "org.scalameta" %% "scalameta" % "4.7.3",
+    scalacOptions += "-Wconf:src=src/main/scala/fix/CollectHeadOption.scala:e,cat=deprecation:ws",
+    scalacOptions += "-Vprint:typer",
     Compile / doc / scalacOptions ++= {
       val hash = sys.process.Process("git rev-parse HEAD").lineStream_!.head
       if (scalaBinaryVersion.value != "3") {
