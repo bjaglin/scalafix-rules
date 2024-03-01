@@ -16,9 +16,13 @@ class InterpolationToString extends SyntacticRule("InterpolationToString") {
             values
           ) =>
         values.collect {
-          case x1 @ Term.Select(
-                x2,
-                Term.Name("toString")
+          case Term.Block(
+                List(
+                  x1 @ Term.Select(
+                    x2,
+                    Term.Name("toString")
+                  )
+                )
               ) =>
             Patch.replaceTree(x1, x2.toString)
         }.asPatch

@@ -17,19 +17,15 @@ class InterpolationToStringWarn extends SyntacticRule("InterpolationToStringWarn
             _,
             values
           ) =>
-        values.collect {
-          case Term.Select(
-                _,
-                t @ Term.Name("toString")
-              ) =>
-            Patch.lint(
-              Diagnostic(
-                id = "",
-                message = "maybe unnecessary `toString` in the `s` interpolation",
-                position = t.pos,
-                severity = LintSeverity.Warning
-              )
+        values.collect { case Term.Block(List(Term.Select(_, t @ Term.Name("toString")))) =>
+          Patch.lint(
+            Diagnostic(
+              id = "",
+              message = "maybe unnecessary `toString` in the `s` interpolation",
+              position = t.pos,
+              severity = LintSeverity.Warning
             )
+          )
         }.asPatch
     }
   }.asPatch
